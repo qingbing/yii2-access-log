@@ -1,6 +1,6 @@
 {
   "name": "qingbing/yii2-access-log",
-  "description": "yii2组件:接口访问日志",
+  "description": "yii2实现组件:接口访问日志",
   "type": "library",
   "license": "MIT",
   "keywords": [
