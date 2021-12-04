@@ -18,13 +18,21 @@ yii2实现组件:接口访问日志
     'bootAccessLog',
 ],
 'components' => [
-    'bootAccessLog' => [
+    'bootAccessLog'  => [
         'class'          => \YiiAccessLog\boots\AccessLogBootstrap::class,
         'accessLogModel' => \YiiAccessLog\models\AccessLogs::class, // 日志模型类
-        'open'           => true, // 开启访问日志
+        'open'           => define_var('COM_BOOT_ACCESS_LOG_OPEN', true), // 开启访问日志
         'ignorePaths'    => [
             '*/list', // 列表的日志不记录，太大
         ],
     ],
 ],
 ```
+
+### 1.3 组件常量配置 define-local.php
+```php
+// bootAccessLog 组件配置
+defined('COM_BOOT_ACCESS_LOG_OPEN') or define('COM_BOOT_ACCESS_LOG_OPEN', true); // 开启访问日志
+
+```
+
