@@ -14,7 +14,6 @@ use YiiAccessLog\models\AccessLogs;
 use YiiAccessLog\services\AccessLogService;
 use YiiHelper\abstracts\RestController;
 use YiiHelper\features\system\models\Systems;
-use Zf\Helper\Traits\Models\TLabelYesNo;
 
 /**
  * 控制器 ： 接口访问日志
@@ -43,7 +42,7 @@ class AccessLogController extends RestController
             ['trace_id', 'string', 'label' => 'Trace ID'],
             ['url_path', 'string', 'label' => '接口路径'],
             ['method', 'in', 'label' => '请求方法', 'range' => array_keys(AccessLogs::methods())],
-            ['is_success', 'in', 'label' => '是否成功', 'range' => array_keys(TLabelYesNo::yesNoLabels())],
+            ['is_success', 'boolean', 'label' => '是否成功'],
             ['ip', 'string', 'label' => '访问IP'],
             ['uid', 'string', 'label' => 'UID'],
             ['message', 'string', 'label' => '消息关键字'],
