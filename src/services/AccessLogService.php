@@ -9,6 +9,8 @@ namespace YiiAccessLog\services;
 
 
 use Yii;
+use yii\base\InvalidConfigException;
+use yii\db\Exception;
 use YiiAccessLog\interfaces\IAccessLogService;
 use YiiAccessLog\models\AccessLogs;
 use YiiHelper\abstracts\Service;
@@ -28,7 +30,7 @@ class AccessLogService extends Service implements IAccessLogService
      *
      * @param array|null $params
      * @return array
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function list(array $params = []): array
     {
@@ -36,7 +38,7 @@ class AccessLogService extends Service implements IAccessLogService
         $query = $this->getModelClass()::find()
             ->alias("logs")
             ->leftJoin(Systems::tableName() . ' AS system', 'system.code=logs.system_code')
-            ->select(['logs.*', 'system.name'])
+            ->select(['logs.*', 'system_name' => 'system.name'])
             ->andFilterWhere(['=', 'system.code', $params['system_code']])
             ->andFilterWhere(['=', 'logs.trace_id', $params['trace_id']])
             ->andFilterWhere(['=', 'logs.method', $params['method']])
@@ -57,24 +59,26 @@ class AccessLogService extends Service implements IAccessLogService
      * 查看接口访问日志详情
      *
      * @param array $params
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return array|false|mixed
+     * @throws InvalidConfigException
+     * @throws Exception
      */
     public function view(array $params)
     {
         // 构建查询query
         $query = $this->getModelClass()::find()
             ->alias("logs")
-            ->select(['logs.*'])
+            ->leftJoin(Systems::tableName() . ' AS system', 'system.code=logs.system_code')
+            ->select(['logs.*', 'system_name' => 'system.name'])
             ->andWhere(['=', 'logs.id', $params['id']]);
-        return $query->one()->toArray([], ['system']);
+        return $query->createCommand()->queryOne();
     }
 
     /**
      * 获取请求访问日志模型实例
      *
      * @return object|AccessLogs
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     protected function getModelClass()
     {
