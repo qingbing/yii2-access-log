@@ -13,7 +13,6 @@ use YiiAccessLog\interfaces\IAccessLogService;
 use YiiAccessLog\models\AccessLogs;
 use YiiAccessLog\services\AccessLogService;
 use YiiHelper\abstracts\RestController;
-use YiiHelper\features\system\models\Systems;
 
 /**
  * 控制器 ： 接口访问日志
@@ -38,7 +37,7 @@ class AccessLogController extends RestController
     {
         // 参数验证和获取
         $params = $this->validateParams([
-            ['system_code', 'exist', 'label' => '系统别名', 'targetClass' => Systems::class, 'targetAttribute' => 'code'],
+            ['system_code', 'string', 'label' => '系统别名'],
             ['trace_id', 'string', 'label' => 'Trace ID'],
             ['url_path', 'string', 'label' => '接口路径'],
             ['method', 'in', 'label' => '请求方法', 'range' => array_keys(AccessLogs::methods())],
